@@ -194,7 +194,7 @@ Material:
     - _FlatRimSize: 0
     - _FlatSpecularEdgeSmoothness: 0
     - _FlatSpecularSize: 0.294
-    - _Flatness: 1
+    - _Flatness: 0.5
     - _FlatnessExtra: 0.75
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -204,7 +204,7 @@ Material:
     - _GradientCenterY: 1.17
     - _GradientEnabled: 0
     - _GradientSize: 1.36
-    - _LightContribution: 0
+    - _LightContribution: 1
     - _LightFalloffSize: 0
     - _LightmapDirectionPitch: 4
     - _LightmapDirectionYaw: 250
@@ -279,3 +279,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 4
+

@@ -12,6 +12,7 @@ public class PlayerAttack : MonoBehaviour
     public float knockbackForce = 3f;
     public float stunDuration = 0.5f;
     public CinemachineImpulseSource impulseSource;
+    public AudioClip attackSound;
     public GameObject gatheringTool;
     public float resourceDamage = 25f;
     private float comboShakeIntensity = 0.2f;
@@ -42,6 +43,8 @@ public class PlayerAttack : MonoBehaviour
             comboShakeIntensity = 0.2f;
         }
         lastAttackTime = Time.time;
+
+        if (attackSound != null && AudioManager.instance != null) AudioManager.instance.PlaySFX(attackSound);
 
         if (impulseSource != null) impulseSource.GenerateImpulse(comboShakeIntensity);
         if (attackPoint == null) return;

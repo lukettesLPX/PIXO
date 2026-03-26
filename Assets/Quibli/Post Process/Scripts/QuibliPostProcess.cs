@@ -76,10 +76,12 @@ public class QuibliPostProcess : ScriptableRendererFeature {
 
 #if UNITY_2022_1_OR_NEWER
 #pragma warning disable CS0672 // Member overrides obsolete member
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
     [Obsolete("This rendering path is for compatibility mode only (when Render Graph is disabled). Use Render Graph API instead.",
               false)]
     public override void SetupRenderPasses(ScriptableRenderer renderer, in RenderingData renderingData) {
-#pragma warning restore CS0672 // Member overrides obsolete member
+#pragma warning restore CS0672
+#pragma warning restore CS0809
         SetupRenderPassesCore(renderer, renderingData);
     }
 #endif

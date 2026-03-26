@@ -5,7 +5,10 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
     public AudioSource musicSource;
     public AudioSource sfxSource;
+    public AudioSource ambienceSource;
+    
     public AudioClip bgMusic;
+    public AudioClip ambienceClip;
     public AudioClip buttonClick;
     public AudioClip enemyHit;
     public AudioClip doorOpen;
@@ -31,13 +34,30 @@ public class AudioManager : MonoBehaviour
             musicSource.loop = true;
             musicSource.Play();
         }
+
+        if (ambienceClip != null && ambienceSource != null)
+        {
+            ambienceSource.clip = ambienceClip;
+            ambienceSource.loop = true;
+            ambienceSource.Play();
+        }
     }
 
-    public void PlaySFX(AudioClip clip)
+    public void PlaySFX(AudioClip clip, float volume = 1f)
     {
         if (clip != null && sfxSource != null)
         {
-            sfxSource.PlayOneShot(clip);
+            sfxSource.PlayOneShot(clip, volume);
+        }
+    }
+
+    public void PlayAmbience(AudioClip clip)
+    {
+        if (clip != null && ambienceSource != null)
+        {
+            ambienceSource.Stop();
+            ambienceSource.clip = clip;
+            ambienceSource.Play();
         }
     }
 }

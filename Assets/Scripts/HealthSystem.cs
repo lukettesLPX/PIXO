@@ -8,8 +8,8 @@ public class HealthSystem : MonoBehaviour
     public int currentHealth;
     public CinemachineImpulseSource damageImpulseSource;
     public UnityEvent onDeath;
+    public AudioClip deathSound;
     private bool isDead = false;
-
 
     private void Start()
     {
@@ -19,7 +19,6 @@ public class HealthSystem : MonoBehaviour
     {
         if (isDead) return;
         currentHealth -= damageAmount;
-        Debug.Log($"[HealthSystem] {gameObject.name} took {damageAmount} damage. Current health: {currentHealth}");
 
         if (damageImpulseSource != null)
         {
@@ -43,20 +42,19 @@ public class HealthSystem : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
-        Debug.Log($"[HealthSystem] {gameObject.name} (Tag: {tag}) has died. Invoking onDeath.");
+        if (deathSound != null && AudioManager.instance != null) AudioManager.instance.PlaySFX(deathSound);
+
         onDeath.Invoke();
         
         if (CompareTag("Player"))
         {
-            // Disable player movement/actions
+            // Lock player
             var controller = GetComponent<CharacterController>();
             if (controller != null) controller.enabled = false;
 
-            // Optional: Set isKinematic on Rigidbody to stop momentum
             var rb = GetComponent<Rigidbody>();
             if (rb != null) rb.isKinematic = true;
 
-            // Disable player input/movement scripts
             MonoBehaviour[] scripts = GetComponents<MonoBehaviour>();
             foreach (var script in scripts)
             {
@@ -68,7 +66,6 @@ public class HealthSystem : MonoBehaviour
         }
         else
         {
-            Debug.Log($"[HealthSystem] Destroying non-player object {gameObject.name}");
             Destroy(gameObject);
         }
     }

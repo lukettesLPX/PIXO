@@ -8,8 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: NatureScene_Grass_Separate_Sprouts
-  m_Shader: {fileID: -6465566751694194690, guid: 55d33328ab3ba4efca3c7706d97d8ee8,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 55d33328ab3ba4efca3c7706d97d8ee8, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -66,6 +65,7 @@ Material:
     - _GustFrequency: 0.5
     - _GustIntensity: 0.25
     - _GustSpeed: 0.5
+    - _LightContrib: 1
     - _PatchesAmount: 0.25
     - _PatchesBluriness: 0.4
     - _PatchesEnabled: 1
@@ -76,7 +76,7 @@ Material:
     - _PatchesThreshold: 0.5
     - _QueueControl: -1
     - _QueueOffset: 0
-    - _ShadowStrength: 0.076
+    - _ShadowStrength: 1.076
     - _WindDirection: -1
     - _WindEnabled: 1
     - _WindFrequency: 1
@@ -87,7 +87,7 @@ Material:
     - Color_8625870c808d4f1b93a120fb2366b73e: {r: 0, g: 0, b: 0, a: 0}
     - Color_fa7bfd953c0f468faf964c3a5545c86d: {r: 0, g: 0, b: 0, a: 1}
     - _ColorBottom: {r: 0.072890714, g: 0.3962264, b: 0.14780997, a: 1}
-    - _ColorTop: {r: 0.20623265, g: 0.6415094, b: 0.075649686, a: 1}
+    - _ColorTop: {r: 0.72195834, g: 1, b: 0.6367924, a: 1}
     - _GustColor: {r: 0.62352943, g: 0.9058824, b: 0.49803925, a: 0.4}
     - _PatchesColor: {r: 0.5644127, g: 0.773, b: 0.45398414, a: 1}
     - _PatchesOffset: {r: -9, g: 4.6, b: 0, a: 0}

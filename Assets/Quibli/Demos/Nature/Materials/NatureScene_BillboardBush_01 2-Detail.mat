@@ -128,7 +128,7 @@ Material:
     - BILLBOARD_ROTATION: 2
     - Billboard_Scale: 1
     - Clip_Threshold: 0.933
-    - Fill_Impact: 0.302
+    - Fill_Impact: 0.85
     - Fill_Scale: 1.54
     - Fresnel_Power: 1
     - Fresnel_Sharpness: 0.5
@@ -187,7 +187,7 @@ Material:
     - _ReceiveShadows: 1
     - _RimEnabled: 0
     - _SelfShadingSize: 0
-    - _ShadowStrength: 0
+    - _ShadowStrength: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularEnabled: 0
@@ -263,3 +263,4 @@ Texture2D:
     offset: 0
     size: 0
     path: 
+

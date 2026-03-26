@@ -9,6 +9,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float dashForce = 20f;
     [SerializeField] private float dashCooldown = 1f;
+    [SerializeField] private AudioClip dashSound;
+
+    [Header("Stamina System")]
+    [SerializeField] private float maxStamina = 5f;
+    [SerializeField] private float staminaRecoveryRate = 1.5f;
+    [SerializeField] private float exhaustionCooldown = 2f;
+    
+    private float currentStamina;
+    private bool isExhausted = false;
+    private float exhaustionTimer = 0f;
 
     private CharacterController controller;
     private Transform cameraTransform;
@@ -25,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
         cameraTransform = Camera.main != null ? Camera.main.transform : transform;
         defaultHeight = controller.height;
         defaultScale = transform.localScale;
+        currentStamina = maxStamina;
     }
 
     private void Update()
@@ -33,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
 
         HandleDashCooldown();
         HandleCrouch();
+        HandleExhaustion();
         
         Vector3 moveDirection = CalculateMovement();
         HandleDash(moveDirection);
@@ -44,6 +56,18 @@ public class PlayerMovement : MonoBehaviour
     private void HandleDashCooldown()
     {
         if (dashTimer > 0) dashTimer -= Time.deltaTime;
+    }
+
+    private void HandleExhaustion()
+    {
+        if (isExhausted)
+        {
+            exhaustionTimer -= Time.deltaTime;
+            if (exhaustionTimer <= 0)
+            {
+                isExhausted = false;
+            }
+        }
     }
 
     private Vector3 CalculateMovement()
@@ -67,7 +91,35 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, targetAngle, 0f), Time.deltaTime * 10f);
 
             float currentSpeed = baseSpeed;
-            if (Keyboard.current.leftShiftKey.isPressed && !isCrouching) currentSpeed *= runMultiplier;
+            bool isRunning = Keyboard.current.leftShiftKey.isPressed && !isCrouching && !isExhausted;
+
+            if (isRunning)
+            {
+                currentSpeed *= runMultiplier;
+                currentStamina -= Time.deltaTime;
+                if (currentStamina <= 0)
+                {
+                    isExhausted = true;
+                    exhaustionTimer = exhaustionCooldown;
+                    currentStamina = 0; // Ensure it starts from 0 for recovery
+                }
+            }
+            else
+            {
+                // Recover stamina when not running
+                if (currentStamina < maxStamina)
+                {
+                    currentStamina += Time.deltaTime * staminaRecoveryRate;
+                }
+            }
+
+            // Estado agotado: detencion completa
+            if (isExhausted)
+            {
+                velocity.x = 0;
+                velocity.z = 0;
+                return transform.forward;
+            }
 
             velocity.x = moveDirection.x * currentSpeed;
             velocity.z = moveDirection.z * currentSpeed;
@@ -75,6 +127,12 @@ public class PlayerMovement : MonoBehaviour
             return moveDirection;
         }
         
+        // No input, recover stamina
+        if (currentStamina < maxStamina)
+        {
+            currentStamina += Time.deltaTime * staminaRecoveryRate;
+        }
+
         velocity.x = 0;
         velocity.z = 0;
         return transform.forward;
@@ -104,6 +162,7 @@ public class PlayerMovement : MonoBehaviour
         {
             dashVelocity = moveDirection.normalized * dashForce;
             dashTimer = dashCooldown;
+            if (dashSound != null && AudioManager.instance != null) AudioManager.instance.PlaySFX(dashSound);
         }
 
         if (dashVelocity.magnitude > 0.2f)

@@ -10,12 +10,15 @@ public class ImpactEmitter : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         ContactPoint contact = collision.contacts[0];
-        if (collision.gameObject.CompareTag("Recurso"))
+        string collidedTag = "";
+        try { collidedTag = collision.gameObject.tag; } catch { }
+
+        if (collidedTag == "Recurso")
         {
             if (resourceEffect != null) GameEvents.TriggerSurfaceImpact(contact.point, contact.normal, resourceEffect);
             else if (simpleResource != null) GameEvents.TriggerSimpleImpact(contact.point, contact.normal, simpleResource);
         }
-        else if (collision.gameObject.CompareTag("Criatura"))
+        else if (collidedTag == "Criatura")
         {
             if (creatureEffect != null) GameEvents.TriggerSurfaceImpact(contact.point, contact.normal, creatureEffect);
             else if (simpleCreature != null) GameEvents.TriggerSimpleImpact(contact.point, contact.normal, simpleCreature);

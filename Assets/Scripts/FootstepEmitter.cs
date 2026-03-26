@@ -4,8 +4,14 @@ public class FootstepEmitter : MonoBehaviour
 {
     public SurfaceEffectData footstepEffect;
     public GameObject simpleEffect;
+    
+    [Header("Audio")]
+    public AudioClip footstepClick;
+    public float footstepVolume = 0.5f;
+
     public bool isAutomatic = true;
     public float stepDistance = 1.5f;
+    public Vector3 stepPositionOffset = new Vector3(0, -0.8f, 0);
 
     private Vector3 lastPosition;
     private float distanceMoved;
@@ -37,7 +43,16 @@ public class FootstepEmitter : MonoBehaviour
 
     public void TriggerFootstep()
     {
-        if (footstepEffect != null) GameEvents.TriggerSurfaceImpact(transform.position, Vector3.up, footstepEffect);
-        else if (simpleEffect != null) GameEvents.TriggerSimpleImpact(transform.position, Vector3.up, simpleEffect);
+        Vector3 spawnPosition = transform.position + stepPositionOffset;
+        
+        // VFX
+        if (footstepEffect != null) GameEvents.TriggerSurfaceImpact(spawnPosition, Vector3.up, footstepEffect);
+        else if (simpleEffect != null) GameEvents.TriggerSimpleImpact(spawnPosition, Vector3.up, simpleEffect);
+
+        // SFX
+        if (footstepClick != null && AudioManager.instance != null)
+        {
+            AudioManager.instance.PlaySFX(footstepClick, footstepVolume);
+        }
     }
 }
