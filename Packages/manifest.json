@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.gamelovers.mcp-unity": "file:C:/Users/Luk/Desktop/package",
     "com.unity.ai.navigation": "2.0.12",
     "com.unity.cinemachine": "3.1.6",
     "com.unity.collab-proxy": "2.10.0",

@@ -12,16 +12,19 @@ public class CatCompanionAI : MonoBehaviour
     public float fleeDistance = 5f;
     
     private NavMeshAgent navMeshAgent;
+    private Animator animator;
     private Vector3 lastPlayerPosition;
+    private CharacterController playerController;
 
     private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        animator = GetComponentInChildren<Animator>();
+        
         if (navMeshAgent != null)
         {
             navMeshAgent.stoppingDistance = followDistance;
             navMeshAgent.updateRotation = true;
-            // Suavizado
             navMeshAgent.acceleration = 8f; 
         }
         
@@ -30,6 +33,7 @@ public class CatCompanionAI : MonoBehaviour
         {
             playerTarget = player.transform;
             lastPlayerPosition = playerTarget.position;
+            playerController = player.GetComponent<CharacterController>();
         }
     }
 
@@ -37,6 +41,27 @@ public class CatCompanionAI : MonoBehaviour
     {
         if (playerTarget == null || navMeshAgent == null) return;
         
+        // Update Animator
+        float currentSpeed = navMeshAgent.velocity.magnitude;
+        
+        // Check if player is nearly still
+        bool isPlayerMoving = false;
+        if (playerController != null)
+        {
+            isPlayerMoving = new Vector3(playerController.velocity.x, 0, playerController.velocity.z).magnitude > 0.1f;
+        }
+
+        // If player is still and we are close enough, force Idle animation
+        if (!isPlayerMoving && Vector3.Distance(transform.position, playerTarget.position) <= followDistance + 0.2f)
+        {
+            currentSpeed = 0f;
+        }
+
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", currentSpeed);
+        }
+
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, fleeRadius);
         bool isFleeing = false;
         Transform nearestEnemy = null;
